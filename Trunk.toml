@@ -1,0 +1,23 @@
+[serve]
+address = "127.0.0.1"
+port = 8080
+
+[build]
+filehash = true
+inject_scripts = true
+offline = false
+
+[tools]
+tailwindcss = "3.4.1"
+
+[[hooks]]
+stage = "post_build" 
+command = "sh" # or "cmd" on Windows 
+command_arguments = ["-c", 
+        # Move the generated files to the static directory and update the index.html file
+        # 將生成的文件移動到 static 目錄並更新index.html文件
+        """ cd $TRUNK_STAGING_DIR && \
+            mkdir -p static && \
+            mv webapp-*.js webapp-*.wasm main-*.css static && \
+            sed -i '' -e 's/webapp-/static\\/webapp-/g' -e 's/main-/static\\/main-/g' index.html
+        """]
